@@ -18,7 +18,43 @@
       background: #f8faff;
       color: #0b1a33;
       line-height: 1.5;
+      transition: background 0.3s, color 0.3s;
     }
+
+    body.dark-mode {
+      background: #121b2b;
+      color: #e8edf5;
+    }
+
+    body.dark-mode .navbar {
+      background: #1a2640;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .navbar .logo { color: #d6e4ff; }
+    body.dark-mode .navbar .nav-links a { color: #b8cef0; }
+    body.dark-mode .navbar .nav-links a:hover { color: #fff; border-bottom-color: #5a8ce0; }
+    body.dark-mode .hero { background: #162033; border-bottom-color: #263a5a; }
+    body.dark-mode .hero p { color: #b8cef0; }
+    body.dark-mode .product-card { background: #1f2d47; border-color: #2f4060; }
+    body.dark-mode .product-card .desc { color: #b0c8e8; }
+    body.dark-mode .product-card ul li { color: #c0d6f0; }
+    body.dark-mode .product-card .price { color: #d6e4ff; }
+    body.dark-mode .product-card .price small { color: #8aacd4; }
+    body.dark-mode .product-card .badge { background: #2f4060; color: #b8cef0; }
+    body.dark-mode .product-card .badge.bundle { background: #6b4f1a; color: #f5d98a; }
+    body.dark-mode .product-card .badge.reading { background: #1a3a6a; color: #b0d0ff; }
+    body.dark-mode .product-icon { background: #1a2a4a; color: #5a8ce0; }
+    body.dark-mode .info-note, 
+    body.dark-mode div[style*="background: #e7efff"] { background: #1a2a4a !important; color: #d6e4ff; }
+    body.dark-mode div[style*="background: #f0f6ff"] { background: #1a2a4a !important; border-color: #2f4060; }
+    body.dark-mode .footer { background: #0d1424; border-top-color: #1f2d47; }
+    body.dark-mode .footer h4 { color: #d6e4ff; }
+    body.dark-mode .footer .footer-bottom { border-top-color: #1f2d47; }
+    body.dark-mode .badge-tagline { background: #1a3a6a; color: #b0d0ff; }
+    body.dark-mode .section-sub { color: #a0bce0; }
+    body.dark-mode .cta-section { background: #0d1424; }
+    body.dark-mode .search-box input { background: #1a2640; color: #e8edf5; border-color: #2f4060; }
+    body.dark-mode .search-box input::placeholder { color: #7890b0; }
 
     a {
       text-decoration: none;
@@ -39,6 +75,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      transition: background 0.3s;
     }
 
     .nav-flex {
@@ -46,6 +83,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .logo {
@@ -68,6 +106,8 @@
       gap: 2rem;
       font-weight: 500;
       color: #1f3a6b;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-links a {
@@ -124,12 +164,17 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 18px rgba(181, 124, 26, 0.4);
     }
+    .btn-small {
+      padding: 0.35rem 1rem;
+      font-size: 0.85rem;
+    }
 
     /* hero section */
     .hero {
       padding: 4rem 0 3.5rem;
       background: linear-gradient(145deg, #f0f6ff 0%, #ffffff 100%);
       border-bottom: 1px solid rgba(0,0,0,0.02);
+      transition: background 0.3s;
     }
 
     .hero-grid {
@@ -178,6 +223,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      transition: background 0.3s;
     }
 
     .badge-tagline i {
@@ -200,6 +246,32 @@
       color: #3d5680;
       margin-bottom: 2.5rem;
       font-size: 1.1rem;
+    }
+
+    /* search box */
+    .search-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 0.7rem 1.2rem;
+      border-radius: 40px;
+      border: 2px solid #dce7fc;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      background: white;
+    }
+    .search-box input:focus {
+      border-color: #2a7de1;
+      box-shadow: 0 0 0 4px rgba(42,125,225,0.1);
+    }
+    .search-box button {
+      border-radius: 40px;
+      padding: 0.7rem 1.5rem;
     }
 
     .product-grid {
@@ -323,13 +395,148 @@
       margin-top: 0.5rem;
     }
 
-    /* cta / divider */
+    /* cart popup */
+    .cart-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0b1a33;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: 0.4s ease;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .cart-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .cart-toast i {
+      color: #5a8ce0;
+      font-size: 1.3rem;
+    }
+    .cart-toast .btn {
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* progress tracker */
+    .progress-tracker {
+      background: white;
+      border-radius: 40px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      border: 1px solid #dce7fc;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .progress-tracker .progress-bar {
+      flex: 2;
+      min-width: 150px;
+      height: 10px;
+      background: #e7efff;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .progress-tracker .progress-bar .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2a7de1, #5a8ce0);
+      border-radius: 20px;
+      transition: width 0.5s ease;
+    }
+    .progress-tracker .stats {
+      display: flex;
+      gap: 1.5rem;
+      font-weight: 500;
+    }
+    .progress-tracker .stats span i {
+      color: #2a7de1;
+      margin-right: 0.3rem;
+    }
+
+    /* quiz mini */
+    .quiz-mini {
+      background: white;
+      border-radius: 40px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      border: 1px solid #dce7fc;
+    }
+    .quiz-mini .question {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+    .quiz-mini .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .quiz-mini .options button {
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      border: 2px solid #dce7fc;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+    .quiz-mini .options button:hover {
+      border-color: #2a7de1;
+      background: #eef4ff;
+    }
+    .quiz-mini .options button.correct {
+      border-color: #28a745;
+      background: #d4edda;
+      color: #155724;
+    }
+    .quiz-mini .options button.wrong {
+      border-color: #dc3545;
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .quiz-mini .quiz-result {
+      margin-top: 0.8rem;
+      font-weight: 600;
+    }
+    body.dark-mode .quiz-mini { background: #1f2d47; border-color: #2f4060; }
+    body.dark-mode .quiz-mini .options button { border-color: #2f4060; color: #d6e4ff; }
+    body.dark-mode .quiz-mini .options button:hover { border-color: #5a8ce0; background: #1a2a4a; }
+    body.dark-mode .progress-tracker { background: #1f2d47; border-color: #2f4060; }
+    body.dark-mode .progress-tracker .progress-bar { background: #2f4060; }
+    body.dark-mode .progress-tracker .stats span { color: #b8cef0; }
+
+    .info-note {
+      background: #e7efff;
+      border-radius: 60px;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
     .cta-section {
       background: #0b1a33;
       color: white;
       padding: 3.5rem 0;
       border-radius: 60px 60px 0 0;
       margin-top: 2rem;
+      transition: background 0.3s;
     }
 
     .cta-inner {
@@ -367,6 +574,7 @@
       color: #c7d9f0;
       padding: 2.5rem 0 1.5rem;
       border-top: 1px solid #1f3460;
+      transition: background 0.3s;
     }
 
     .footer-grid {
@@ -432,15 +640,34 @@
       opacity: 0.7;
     }
 
-    /* responsive */
+    .dark-toggle {
+      cursor: pointer;
+      background: #dce7fc;
+      padding: 0.4rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      border: none;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .dark-toggle:hover {
+      background: #b8cef0;
+    }
+    body.dark-mode .dark-toggle {
+      background: #2f4060;
+      color: #d6e4ff;
+    }
+    body.dark-mode .dark-toggle:hover { background: #3a507a; }
+
     @media (max-width: 700px) {
       .nav-flex {
         flex-direction: column;
         gap: 0.75rem;
       }
       .nav-links {
-        gap: 1.2rem;
-        flex-wrap: wrap;
+        gap: 1rem;
         justify-content: center;
       }
       .hero h1 {
@@ -453,8 +680,15 @@
         flex-direction: column;
         text-align: center;
       }
+      .progress-tracker {
+        flex-direction: column;
+        text-align: center;
+      }
+      .progress-tracker .stats {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
-
     @media (max-width: 480px) {
       .product-grid {
         grid-template-columns: 1fr 1fr;
@@ -474,6 +708,7 @@
         <a href="#products">Products</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
+        <button class="dark-toggle" id="darkToggle"><i class="fas fa-moon"></i> Dark</button>
       </div>
       <a href="#products" class="btn btn-outline" style="padding:0.45rem 1.6rem;"><i class="fas fa-store"></i> Shop</a>
     </div>
@@ -495,7 +730,7 @@
         <a href="#products" class="btn btn-outline"><i class="fas fa-book-open"></i> Explore materials</a>
       </div>
       <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center; font-size:0.9rem; color:#2e4b7a;">
-        <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> High School & Elem</span>
+        <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> SHS & College</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Affordable</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Instant access</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Reading sessions</span>
@@ -503,49 +738,81 @@
     </div>
   </section>
 
-  <!-- PRODUCTS section (includes all items) -->
+  <!-- PRODUCTS section -->
   <section class="products" id="products">
     <div class="container">
       <h2 class="section-title">📖 Digital learning materials & reading sessions</h2>
       <p class="section-sub">Choose from study resources or book a reading session — all in one place.</p>
 
-      <div class="product-grid">
+      <!-- 🔍 FEATURE 1: SEARCH / FILTER -->
+      <div class="search-box">
+        <input type="text" id="productSearch" placeholder="Search for notes, quizzes, reading..." onkeyup="filterProducts()">
+        <button class="btn btn-small" onclick="filterProducts()"><i class="fas fa-search"></i></button>
+      </div>
+
+      <!-- 📊 FEATURE 2: PROGRESS TRACKER -->
+      <div class="progress-tracker">
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <i class="fas fa-chart-line" style="color:#2a7de1; font-size:1.5rem;"></i>
+          <span style="font-weight:600;">Your Study Progress</span>
+        </div>
+        <div class="progress-bar">
+          <div class="fill" id="progressFill" style="width:42%;"></div>
+        </div>
+        <div class="stats">
+          <span><i class="fas fa-check-circle"></i> <span id="completedCount">3</span> completed</span>
+          <span><i class="fas fa-book"></i> <span id="totalCount">7</span> total</span>
+          <button class="btn btn-small" onclick="updateProgress()" style="padding:0.3rem 1rem; font-size:0.8rem;"><i class="fas fa-sync"></i> Update</button>
+        </div>
+      </div>
+
+      <!-- 🧠 FEATURE 3: MINI QUIZ -->
+      <div class="quiz-mini" id="miniQuiz">
+        <div class="question"><i class="fas fa-brain" style="color:#2a7de1;"></i> Quick Quiz: What does "comprehension" mean?</div>
+        <div class="options" id="quizOptions">
+          <button onclick="checkQuiz(this, true)">Understanding</button>
+          <button onclick="checkQuiz(this, false)">Memorization</button>
+          <button onclick="checkQuiz(this, false)">Writing</button>
+          <button onclick="checkQuiz(this, false)">Speaking</button>
+        </div>
+        <div class="quiz-result" id="quizResult"></div>
+      </div>
+
+      <div class="product-grid" id="productGrid">
         <!-- Notes -->
-        <div class="product-card">
+        <div class="product-card" data-name="notes study notes">
           <div class="product-icon"><i class="fas fa-file-alt"></i></div>
           <h3>Study Notes</h3>
           <div class="price">₱29 <small>/ pack</small></div>
           <div class="desc">Concise, structured notes for key subjects.</div>
-          <a href="#" class="btn" style="background:#1f4f9e;">Get notes</a>
+          <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('Study Notes', 29)">Get notes</a>
         </div>
         <!-- Reviewers -->
-        <div class="product-card">
+        <div class="product-card" data-name="reviewer packs reviewers">
           <div class="product-icon"><i class="fas fa-clipboard-list"></i></div>
           <h3>Reviewer Packs</h3>
           <div class="price">₱49 <small>/ pack</small></div>
           <div class="desc">Comprehensive reviewers with practice questions.</div>
-          <a href="#" class="btn" style="background:#1f4f9e;">Get reviewer</a>
+          <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('Reviewer Pack', 49)">Get reviewer</a>
         </div>
         <!-- PowerPoint -->
-        <div class="product-card">
+        <div class="product-card" data-name="powerpoint presentation ppt slides">
           <div class="product-icon"><i class="fas fa-presentation"></i></div>
           <h3>PowerPoint</h3>
           <div class="price">₱39 <small>/ deck</small></div>
           <div class="desc">Visual slides for lectures & self-study.</div>
-          <a href="#" class="btn" style="background:#1f4f9e;">Get PPT</a>
+          <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('PowerPoint', 39)">Get PPT</a>
         </div>
         <!-- Practice Quizzes -->
-        <div class="product-card">
+        <div class="product-card" data-name="practice quiz quizzes">
           <div class="product-icon"><i class="fas fa-pencil-alt"></i></div>
           <h3>Practice Quizzes</h3>
           <div class="price">₱29 <small>/ set</small></div>
           <div class="desc">Test yourself with exam‑style questions.</div>
-          <a href="#" class="btn" style="background:#1f4f9e;">Start quiz</a>
+          <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('Practice Quiz', 29)">Start quiz</a>
         </div>
-
-        <!-- === READING ASSISTANCE SESSIONS (added) === -->
         <!-- 30-min session -->
-        <div class="product-card" style="border-color:#b8d0f5;">
+        <div class="product-card" data-name="reading session 30 min" style="border-color:#b8d0f5;">
           <span class="badge reading"><i class="far fa-clock"></i> 30 min</span>
           <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-book-reader"></i></div>
           <h3>Reading Session</h3>
@@ -556,11 +823,10 @@
             <li><i class="fas fa-check-circle"></i> Vocabulary improvement</li>
             <li><i class="fas fa-check-circle"></i> Reading comprehension</li>
           </ul>
-          <a href="#" class="btn" style="background:#1a4a8a;"><i class="fas fa-calendar-check"></i> Book Session</a>
+          <a href="#" class="btn" style="background:#1a4a8a;" onclick="addToCart('Reading Session 30min', 50)"><i class="fas fa-calendar-check"></i> Book Session</a>
         </div>
-
         <!-- 1-hour session -->
-        <div class="product-card" style="border-color:#b8d0f5;">
+        <div class="product-card" data-name="reading session 1 hour" style="border-color:#b8d0f5;">
           <span class="badge reading"><i class="far fa-clock"></i> 1 hour</span>
           <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-chalkboard-teacher"></i></div>
           <h3>Reading Session</h3>
@@ -571,11 +837,10 @@
             <li><i class="fas fa-check-circle"></i> Personalized feedback</li>
             <li><i class="fas fa-check-circle"></i> In‑depth comprehension</li>
           </ul>
-          <a href="#" class="btn" style="background:#1a4a8a;"><i class="fas fa-calendar-check"></i> Book Session</a>
+          <a href="#" class="btn" style="background:#1a4a8a;" onclick="addToCart('Reading Session 1hr', 80)"><i class="fas fa-calendar-check"></i> Book Session</a>
         </div>
-
-        <!-- Bundle Offer (reading) -->
-        <div class="product-card" style="border-color:#f7d88a; background:#fffcf0;">
+        <!-- Bundle Offer -->
+        <div class="product-card" data-name="reading bundle 5 sessions" style="border-color:#f7d88a; background:#fffcf0;">
           <span class="badge bundle"><i class="fas fa-gift"></i> BEST VALUE</span>
           <div class="product-icon" style="background:#fce9c9; color:#865d1a;"><i class="fas fa-layer-group"></i></div>
           <h3>Reading Bundle</h3>
@@ -586,29 +851,28 @@
             <li><i class="fas fa-check-circle" style="color:#b57c1a;"></i> Flexible scheduling</li>
             <li><i class="fas fa-check-circle" style="color:#b57c1a;"></i> All 30‑min benefits</li>
           </ul>
-          <a href="#" class="btn btn-gold"><i class="fas fa-calendar-check"></i> Book Bundle</a>
+          <a href="#" class="btn btn-gold" onclick="addToCart('Reading Bundle 5x', 225)"><i class="fas fa-calendar-check"></i> Book Bundle</a>
         </div>
       </div>
 
-      <!-- premium subscription highlight -->
-      <div style="margin-top: 3rem; background: #e7efff; border-radius: 60px; padding: 1.8rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <!-- premium subscription -->
+      <div style="margin-top: 3rem; background: #e7efff; border-radius: 60px; padding: 1.8rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; transition: background 0.3s;">
         <div>
           <span class="subscription-badge"><i class="fas fa-crown"></i> PREMIUM</span>
           <h3 style="margin:0.4rem 0 0.2rem; font-size:1.7rem;">Monthly Subscription</h3>
           <p style="color:#1f3a6b; font-weight:500;">₱99 / month · unlimited access to all digital resources</p>
         </div>
-        <a href="#" class="btn" style="background:#0b1a33; box-shadow:0 6px 14px rgba(11,26,51,0.3);"><i class="fas fa-star"></i> Subscribe now</a>
+        <a href="#" class="btn" style="background:#0b1a33; box-shadow:0 6px 14px rgba(11,26,51,0.3);" onclick="addToCart('Premium Subscription', 99)"><i class="fas fa-star"></i> Subscribe now</a>
       </div>
 
-      <!-- extra note about reading sessions -->
-      <div style="margin-top: 2rem; background: #f0f6ff; border-radius: 40px; padding: 1.2rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border:1px solid #d4e2fc;">
-        <p style="font-weight:500; color:#0b2b5c;"><i class="fas fa-users" style="color:#2a7de1;"></i> Reading sessions are 1-on-1 with a dedicated coach. Flexible scheduling available.</p>
+      <div class="info-note">
+        <p><i class="fas fa-users"></i> Reading sessions are 1-on-1 with a dedicated coach. Flexible scheduling available.</p>
         <a href="#" class="btn" style="background:#0b1a33; padding:0.5rem 1.8rem;"><i class="fas fa-headset"></i> Contact coach</a>
       </div>
     </div>
   </section>
 
-  <!-- CTA / divider -->
+  <!-- CTA -->
   <div class="cta-section">
     <div class="container cta-inner">
       <div>
@@ -634,8 +898,8 @@
         <div id="contact">
           <h4><i class="fas fa-envelope"></i> Contact</h4>
           <ul>
-            <li><a href="#"><i class="fas fa-envelope"></i> studyy.hubbbb@gmail.com</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i> +63 917 210 0453</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> hello@studyhub.ph</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> +63 912 3456 789</a></li>
           </ul>
         </div>
         <div>
@@ -646,9 +910,9 @@
             <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
           </div>
           <div style="margin-top:0.8rem;">
-            <a href="#" style="opacity:0.8;"><i class="fab fa-facebook"></i> RPAPAStudyHubPH</a><br>
-            <a href="#" style="opacity:0.8;"><i class="fab fa-instagram"></i> @rpapastudyhub.ph</a><br>
-            <a href="#" style="opacity:0.8;"><i class="fab fa-tiktok"></i> @rpapastudyhub</a>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-facebook"></i> /StudyHubPH</a><br>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-instagram"></i> @studyhub.ph</a><br>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-tiktok"></i> @studyhub</a>
           </div>
         </div>
         <div>
@@ -660,7 +924,6 @@
           </ul>
         </div>
       </div>
-
       <div class="footer-bottom">
         <span>© 2026 StudyHub. All rights reserved.</span>
         <span><i class="fas fa-graduation-cap"></i> Study Smarter. Ace Every Exam.</span>
@@ -668,8 +931,103 @@
     </div>
   </footer>
 
-  <!-- smooth scroll for anchor links -->
+  <!-- 🛒 FEATURE 4: CART TOAST -->
+  <div class="cart-toast" id="cartToast">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cartMessage">Added to cart!</span>
+    <button class="btn btn-small" onclick="hideCart()">OK</button>
+  </div>
+
   <script>
+    // ========== FEATURE 1: SEARCH / FILTER ==========
+    function filterProducts() {
+      const query = document.getElementById('productSearch').value.toLowerCase();
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name') || '';
+        const visible = name.includes(query) || query === '';
+        card.style.display = visible ? 'flex' : 'none';
+      });
+    }
+
+    // ========== FEATURE 2: PROGRESS TRACKER ==========
+    let completed = 3;
+    const total = 7;
+
+    function updateProgress() {
+      completed = Math.min(completed + 1, total);
+      document.getElementById('completedCount').textContent = completed;
+      const pct = Math.round((completed / total) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      // also update when adding to cart
+    }
+
+    // ========== FEATURE 3: MINI QUIZ ==========
+    let quizAnswered = false;
+
+    function checkQuiz(btn, isCorrect) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const options = document.querySelectorAll('#quizOptions button');
+      options.forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        document.getElementById('quizResult').innerHTML = '✅ Correct! Great job!';
+        document.getElementById('quizResult').style.color = '#28a745';
+        completed = Math.min(completed + 1, total);
+        document.getElementById('completedCount').textContent = completed;
+        const pct = Math.round((completed / total) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+      } else {
+        btn.classList.add('wrong');
+        document.getElementById('quizResult').innerHTML = '❌ Not quite. The correct answer is "Understanding".';
+        document.getElementById('quizResult').style.color = '#dc3545';
+        // highlight correct
+        document.querySelectorAll('#quizOptions button').forEach(b => {
+          if (b.textContent.trim() === 'Understanding') b.classList.add('correct');
+        });
+      }
+    }
+
+    // ========== FEATURE 4: CART / TOAST ==========
+    let cartCount = 0;
+
+    function addToCart(name, price) {
+      cartCount++;
+      const msg = `🛒 Added: ${name} (₱${price})`;
+      document.getElementById('cartMessage').textContent = msg;
+      const toast = document.getElementById('cartToast');
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+      // update progress when adding items
+      if (cartCount % 2 === 0) {
+        completed = Math.min(completed + 1, total);
+        document.getElementById('completedCount').textContent = completed;
+        const pct = Math.round((completed / total) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+      }
+      return false; // prevent page jump
+    }
+
+    function hideCart() {
+      document.getElementById('cartToast').classList.remove('show');
+    }
+
+    // ========== FEATURE 5: DARK MODE ==========
+    const darkToggle = document.getElementById('darkToggle');
+    darkToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const icon = this.querySelector('i');
+      if (document.body.classList.contains('dark-mode')) {
+        icon.className = 'fas fa-sun';
+        this.innerHTML = '<i class="fas fa-sun"></i> Light';
+      } else {
+        icon.className = 'fas fa-moon';
+        this.innerHTML = '<i class="fas fa-moon"></i> Dark';
+      }
+    });
+
+    // smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -681,6 +1039,11 @@
         }
       });
     });
+
+    // init progress
+    document.getElementById('completedCount').textContent = completed;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('progressFill').style.width = Math.round((completed/total)*100) + '%';
   </script>
 </body>
-</html>
+</html> 
