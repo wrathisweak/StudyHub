@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyHub · One‑Stop Learning</title>
+  <title>StudyHub · Practice Quiz</title>
   <!-- Font Awesome 6 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -44,9 +44,8 @@
     body.dark-mode .product-card .badge.bundle { background: #6b4f1a; color: #f5d98a; }
     body.dark-mode .product-card .badge.reading { background: #1a3a6a; color: #b0d0ff; }
     body.dark-mode .product-icon { background: #1a2a4a; color: #5a8ce0; }
-    body.dark-mode .info-note, 
+    body.dark-mode .info-note,
     body.dark-mode div[style*="background: #e7efff"] { background: #1a2a4a !important; color: #d6e4ff; }
-    body.dark-mode div[style*="background: #f0f6ff"] { background: #1a2a4a !important; border-color: #2f4060; }
     body.dark-mode .footer { background: #0d1424; border-top-color: #1f2d47; }
     body.dark-mode .footer h4 { color: #d6e4ff; }
     body.dark-mode .footer .footer-bottom { border-top-color: #1f2d47; }
@@ -55,6 +54,12 @@
     body.dark-mode .cta-section { background: #0d1424; }
     body.dark-mode .search-box input { background: #1a2640; color: #e8edf5; border-color: #2f4060; }
     body.dark-mode .search-box input::placeholder { color: #7890b0; }
+    body.dark-mode .quiz-container { background: #1f2d47; border-color: #2f4060; }
+    body.dark-mode .quiz-container .options button { border-color: #2f4060; color: #d6e4ff; }
+    body.dark-mode .quiz-container .options button:hover { border-color: #5a8ce0; background: #1a2a4a; }
+    body.dark-mode .quiz-container .options button.correct { border-color: #28a745; background: #1a3a2a; color: #8fdfa5; }
+    body.dark-mode .quiz-container .options button.wrong { border-color: #dc3545; background: #3a1a1a; color: #f5a0a0; }
+    body.dark-mode .quiz-container .options button.show-correct { border-color: #28a745; background: #1a3a2a; color: #8fdfa5; opacity: 0.7; }
 
     a {
       text-decoration: none;
@@ -67,7 +72,6 @@
       padding: 0 1.5rem;
     }
 
-    /* header / nav */
     .navbar {
       background: #ffffff;
       box-shadow: 0 4px 12px rgba(0, 20, 50, 0.04);
@@ -168,8 +172,21 @@
       padding: 0.35rem 1rem;
       font-size: 0.85rem;
     }
+    .btn-success {
+      background: #28a745;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.25);
+    }
+    .btn-success:hover {
+      background: #1e7e34;
+    }
+    .btn-danger {
+      background: #dc3545;
+      box-shadow: 0 4px 10px rgba(220, 53, 69, 0.25);
+    }
+    .btn-danger:hover {
+      background: #bd2130;
+    }
 
-    /* hero section */
     .hero {
       padding: 4rem 0 3.5rem;
       background: linear-gradient(145deg, #f0f6ff 0%, #ffffff 100%);
@@ -205,14 +222,6 @@
       max-width: 650px;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.2rem;
-      margin-top: 0.5rem;
-    }
-
     .badge-tagline {
       background: #dce7fc;
       padding: 0.4rem 1.2rem;
@@ -230,7 +239,6 @@
       color: #2a7de1;
     }
 
-    /* products section */
     .products {
       padding: 4rem 0 5rem;
     }
@@ -248,7 +256,6 @@
       font-size: 1.1rem;
     }
 
-    /* search box */
     .search-box {
       display: flex;
       gap: 0.5rem;
@@ -268,10 +275,6 @@
     .search-box input:focus {
       border-color: #2a7de1;
       box-shadow: 0 0 0 4px rgba(42,125,225,0.1);
-    }
-    .search-box button {
-      border-radius: 40px;
-      padding: 0.7rem 1.5rem;
     }
 
     .product-grid {
@@ -395,7 +398,136 @@
       margin-top: 0.5rem;
     }
 
-    /* cart popup */
+    /* QUIZ CONTAINER */
+    .quiz-container {
+      background: white;
+      border-radius: 40px;
+      padding: 2rem 2.5rem;
+      margin: 2.5rem 0;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      border: 1px solid #dce7fc;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .quiz-container .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+    .quiz-container .quiz-header h2 {
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .quiz-container .quiz-header h2 i {
+      color: #2a7de1;
+    }
+    .quiz-container .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid #e7efff;
+    }
+    .quiz-container .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .quiz-container .options button {
+      padding: 0.8rem 1.2rem;
+      border-radius: 16px;
+      border: 2px solid #dce7fc;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      text-align: left;
+      font-size: 1rem;
+    }
+    .quiz-container .options button:hover:not(:disabled) {
+      border-color: #2a7de1;
+      background: #eef4ff;
+    }
+    .quiz-container .options button:disabled {
+      cursor: default;
+    }
+    .quiz-container .options button.correct {
+      border-color: #28a745;
+      background: #d4edda;
+      color: #155724;
+    }
+    .quiz-container .options button.wrong {
+      border-color: #dc3545;
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .quiz-container .options button.show-correct {
+      border-color: #28a745;
+      background: #d4edda;
+      color: #155724;
+      opacity: 0.6;
+    }
+    .quiz-container .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e7efff;
+    }
+    .quiz-container .quiz-nav .question-counter {
+      font-weight: 500;
+      color: #3d5680;
+    }
+    .quiz-container .quiz-results {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 24px;
+      background: #e7efff;
+      text-align: center;
+    }
+    .quiz-container .quiz-results .score {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #0b2b5c;
+    }
+    .quiz-container .quiz-results .details {
+      margin-top: 1rem;
+      text-align: left;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .quiz-container .quiz-results .details .review-item {
+      padding: 0.5rem 0.8rem;
+      border-radius: 12px;
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.5);
+    }
+    .quiz-container .quiz-results .details .review-item.correct-item {
+      border-left: 4px solid #28a745;
+    }
+    .quiz-container .quiz-results .details .review-item.wrong-item {
+      border-left: 4px solid #dc3545;
+    }
+    .quiz-container .quiz-results .details .review-item .q {
+      flex: 1;
+      margin-right: 1rem;
+    }
+    .quiz-container .quiz-results .details .review-item .ans {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
     .cart-toast {
       position: fixed;
       bottom: 30px;
@@ -421,12 +553,7 @@
       color: #5a8ce0;
       font-size: 1.3rem;
     }
-    .cart-toast .btn {
-      padding: 0.3rem 1rem;
-      font-size: 0.8rem;
-    }
 
-    /* progress tracker */
     .progress-tracker {
       background: white;
       border-radius: 40px;
@@ -439,6 +566,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
+      transition: background 0.3s, border-color 0.3s;
     }
     .progress-tracker .progress-bar {
       flex: 2;
@@ -464,59 +592,6 @@
       color: #2a7de1;
       margin-right: 0.3rem;
     }
-
-    /* quiz mini */
-    .quiz-mini {
-      background: white;
-      border-radius: 40px;
-      padding: 1.8rem 2rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      border: 1px solid #dce7fc;
-    }
-    .quiz-mini .question {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 0.8rem;
-    }
-    .quiz-mini .options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-    }
-    .quiz-mini .options button {
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      border: 2px solid #dce7fc;
-      background: transparent;
-      cursor: pointer;
-      transition: 0.2s;
-      font-weight: 500;
-    }
-    .quiz-mini .options button:hover {
-      border-color: #2a7de1;
-      background: #eef4ff;
-    }
-    .quiz-mini .options button.correct {
-      border-color: #28a745;
-      background: #d4edda;
-      color: #155724;
-    }
-    .quiz-mini .options button.wrong {
-      border-color: #dc3545;
-      background: #f8d7da;
-      color: #721c24;
-    }
-    .quiz-mini .quiz-result {
-      margin-top: 0.8rem;
-      font-weight: 600;
-    }
-    body.dark-mode .quiz-mini { background: #1f2d47; border-color: #2f4060; }
-    body.dark-mode .quiz-mini .options button { border-color: #2f4060; color: #d6e4ff; }
-    body.dark-mode .quiz-mini .options button:hover { border-color: #5a8ce0; background: #1a2a4a; }
-    body.dark-mode .progress-tracker { background: #1f2d47; border-color: #2f4060; }
-    body.dark-mode .progress-tracker .progress-bar { background: #2f4060; }
-    body.dark-mode .progress-tracker .stats span { color: #b8cef0; }
 
     .info-note {
       background: #e7efff;
@@ -568,7 +643,6 @@
       background: #e0ebff;
     }
 
-    /* footer */
     .footer {
       background: #0b1a33;
       color: #c7d9f0;
@@ -688,6 +762,12 @@
         flex-wrap: wrap;
         justify-content: center;
       }
+      .quiz-container .options {
+        grid-template-columns: 1fr;
+      }
+      .quiz-container {
+        padding: 1.5rem;
+      }
     }
     @media (max-width: 480px) {
       .product-grid {
@@ -706,6 +786,7 @@
       </div>
       <div class="nav-links">
         <a href="#products">Products</a>
+        <a href="#quizSection">Quiz</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
         <button class="dark-toggle" id="darkToggle"><i class="fas fa-moon"></i> Dark</button>
@@ -714,7 +795,7 @@
     </div>
   </header>
 
-  <!-- HERO section -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container hero-grid">
       <div class="badge-tagline">
@@ -727,7 +808,7 @@
       <p>Find quality notes, reviewer packs, PowerPoint presentations, practice quizzes, and reading assistance — all designed to help students succeed.</p>
       <div class="hero-actions">
         <a href="#products" class="btn"><i class="fas fa-arrow-right"></i> Get Started</a>
-        <a href="#products" class="btn btn-outline"><i class="fas fa-book-open"></i> Explore materials</a>
+        <a href="#quizSection" class="btn btn-outline"><i class="fas fa-pencil-alt"></i> Take a Quiz</a>
       </div>
       <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center; font-size:0.9rem; color:#2e4b7a;">
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> SHS & College</span>
@@ -738,19 +819,18 @@
     </div>
   </section>
 
-  <!-- PRODUCTS section -->
+  <!-- PRODUCTS -->
   <section class="products" id="products">
     <div class="container">
       <h2 class="section-title">📖 Digital learning materials & reading sessions</h2>
       <p class="section-sub">Choose from study resources or book a reading session — all in one place.</p>
 
-      <!-- 🔍 FEATURE 1: SEARCH / FILTER -->
       <div class="search-box">
         <input type="text" id="productSearch" placeholder="Search for notes, quizzes, reading..." onkeyup="filterProducts()">
         <button class="btn btn-small" onclick="filterProducts()"><i class="fas fa-search"></i></button>
       </div>
 
-      <!-- 📊 FEATURE 2: PROGRESS TRACKER -->
+      <!-- Progress Tracker -->
       <div class="progress-tracker">
         <div style="display:flex; align-items:center; gap:0.8rem;">
           <i class="fas fa-chart-line" style="color:#2a7de1; font-size:1.5rem;"></i>
@@ -764,18 +844,6 @@
           <span><i class="fas fa-book"></i> <span id="totalCount">7</span> total</span>
           <button class="btn btn-small" onclick="updateProgress()" style="padding:0.3rem 1rem; font-size:0.8rem;"><i class="fas fa-sync"></i> Update</button>
         </div>
-      </div>
-
-      <!-- 🧠 FEATURE 3: MINI QUIZ -->
-      <div class="quiz-mini" id="miniQuiz">
-        <div class="question"><i class="fas fa-brain" style="color:#2a7de1;"></i> Quick Quiz: What does "comprehension" mean?</div>
-        <div class="options" id="quizOptions">
-          <button onclick="checkQuiz(this, true)">Understanding</button>
-          <button onclick="checkQuiz(this, false)">Memorization</button>
-          <button onclick="checkQuiz(this, false)">Writing</button>
-          <button onclick="checkQuiz(this, false)">Speaking</button>
-        </div>
-        <div class="quiz-result" id="quizResult"></div>
       </div>
 
       <div class="product-grid" id="productGrid">
@@ -803,13 +871,14 @@
           <div class="desc">Visual slides for lectures & self-study.</div>
           <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('PowerPoint', 39)">Get PPT</a>
         </div>
-        <!-- Practice Quizzes -->
-        <div class="product-card" data-name="practice quiz quizzes">
-          <div class="product-icon"><i class="fas fa-pencil-alt"></i></div>
-          <h3>Practice Quizzes</h3>
-          <div class="price">₱29 <small>/ set</small></div>
-          <div class="desc">Test yourself with exam‑style questions.</div>
-          <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('Practice Quiz', 29)">Start quiz</a>
+        <!-- Practice Quizzes - NOW OPENS THE QUIZ -->
+        <div class="product-card" data-name="practice quiz quizzes" style="border-color:#2a7de1; border-width:2px;">
+          <span class="badge" style="background:#2a7de1; color:white;"><i class="fas fa-star"></i> Interactive</span>
+          <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-pencil-alt"></i></div>
+          <h3>Practice Quiz</h3>
+          <div class="price">Free <small>/ 20 questions</small></div>
+          <div class="desc">Test your knowledge with 20 multiple-choice questions.</div>
+          <a href="#quizSection" class="btn" style="background:#1a4a8a;" onclick="document.getElementById('quizSection').scrollIntoView({behavior:'smooth'}); return false;"><i class="fas fa-play"></i> Take Quiz</a>
         </div>
         <!-- 30-min session -->
         <div class="product-card" data-name="reading session 30 min" style="border-color:#b8d0f5;">
@@ -855,7 +924,7 @@
         </div>
       </div>
 
-      <!-- premium subscription -->
+      <!-- Premium Subscription -->
       <div style="margin-top: 3rem; background: #e7efff; border-radius: 60px; padding: 1.8rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; transition: background 0.3s;">
         <div>
           <span class="subscription-badge"><i class="fas fa-crown"></i> PREMIUM</span>
@@ -868,6 +937,40 @@
       <div class="info-note">
         <p><i class="fas fa-users"></i> Reading sessions are 1-on-1 with a dedicated coach. Flexible scheduling available.</p>
         <a href="#" class="btn" style="background:#0b1a33; padding:0.5rem 1.8rem;"><i class="fas fa-headset"></i> Contact coach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FULL QUIZ SECTION ===== -->
+  <section id="quizSection" style="padding: 2rem 0 4rem; scroll-margin-top: 80px;">
+    <div class="container">
+      <div class="quiz-container" id="quizContainer">
+        <div class="quiz-header">
+          <h2><i class="fas fa-pencil-alt"></i> Practice Quiz</h2>
+          <div>
+            <span style="background:#dce7fc; padding:0.3rem 1rem; border-radius:40px; font-weight:600; font-size:0.9rem;">
+              <i class="fas fa-question-circle"></i> <span id="currentQDisplay">1</span>/20
+            </span>
+          </div>
+        </div>
+
+        <!-- Question Area -->
+        <div id="quizQuestionArea">
+          <div class="question-text" id="questionText">Loading question...</div>
+          <div class="options" id="optionsContainer"></div>
+          <div class="quiz-nav">
+            <div class="question-counter" id="questionCounter">Question 1 of 20</div>
+            <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+              <button class="btn btn-small" id="prevBtn" onclick="prevQuestion()" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+              <button class="btn btn-small" id="nextBtn" onclick="nextQuestion()">Next <i class="fas fa-chevron-right"></i></button>
+              <button class="btn btn-small btn-success" id="submitBtn" onclick="submitQuiz()" style="display:none;"><i class="fas fa-check"></i> Submit Quiz</button>
+              <button class="btn btn-small btn-danger" id="resetBtn" onclick="resetQuiz()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Area (hidden initially) -->
+        <div id="quizResults" style="display:none;"></div>
       </div>
     </div>
   </section>
@@ -931,7 +1034,7 @@
     </div>
   </footer>
 
-  <!-- 🛒 FEATURE 4: CART TOAST -->
+  <!-- Cart Toast -->
   <div class="cart-toast" id="cartToast">
     <i class="fas fa-shopping-cart"></i>
     <span id="cartMessage">Added to cart!</span>
@@ -939,18 +1042,212 @@
   </div>
 
   <script>
-    // ========== FEATURE 1: SEARCH / FILTER ==========
+    // ===================== QUIZ DATA (20 questions) =====================
+    const quizData = [
+      { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "NaCl", "HCl"], correct: 0 },
+      { question: "What is the largest planet in our solar system?", options: ["Earth", "Saturn", "Jupiter", "Neptune"], correct: 2 },
+      { question: "What is the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi"], correct: 2 },
+      { question: "What is the atomic number of Carbon?", options: ["6", "8", "12", "14"], correct: 0 },
+      { question: "What is the main gas in the Earth's atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], correct: 1 },
+      { question: "What is the square root of 144?", options: ["10", "11", "12", "13"], correct: 2 },
+      { question: "What is the capital of France?", options: ["London", "Paris", "Rome", "Madrid"], correct: 1 },
+      { question: "What is the chemical formula for table salt?", options: ["NaCl", "KCl", "CaCO3", "NaOH"], correct: 0 },
+      { question: "What is the speed of light approximately?", options: ["3x10^6 m/s", "3x10^8 m/s", "3x10^10 m/s", "3x10^4 m/s"], correct: 1 },
+      { question: "What is the study of living organisms?", options: ["Physics", "Chemistry", "Biology", "Geology"], correct: 2 },
+      { question: "What is the main function of the human heart?", options: ["Pump blood", "Filter waste", "Produce energy", "Store nutrients"], correct: 0 },
+      { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correct: 2 },
+      { question: "What is the primary language spoken in Brazil?", options: ["Spanish", "Portuguese", "English", "French"], correct: 1 },
+      { question: "What is the chemical symbol for Gold?", options: ["Au", "Ag", "Fe", "Cu"], correct: 0 },
+      { question: "What is the longest bone in the human body?", options: ["Tibia", "Femur", "Humerus", "Radius"], correct: 1 },
+      { question: "What is the value of Pi (π) to two decimal places?", options: ["3.14", "3.16", "3.12", "3.18"], correct: 0 },
+      { question: "What is the main function of chloroplasts?", options: ["Photosynthesis", "Respiration", "Digestion", "Excretion"], correct: 0 },
+      { question: "What is the tallest mountain in the world?", options: ["K2", "Everest", "Kangchenjunga", "Lhotse"], correct: 1 },
+      { question: "What is the largest ocean on Earth?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], correct: 2 },
+      { question: "What is the chemical symbol for Oxygen?", options: ["O", "Ox", "Om", "Og"], correct: 0 }
+    ];
+
+    // ===================== QUIZ STATE =====================
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let quizSubmitted = false;
+
+    // DOM refs
+    const questionText = document.getElementById('questionText');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const currentQDisplay = document.getElementById('currentQDisplay');
+    const questionCounter = document.getElementById('questionCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const quizResults = document.getElementById('quizResults');
+    const quizQuestionArea = document.getElementById('quizQuestionArea');
+
+    function renderQuestion(index) {
+      const q = quizData[index];
+      questionText.textContent = `${index + 1}. ${q.question}`;
+      currentQDisplay.textContent = index + 1;
+      questionCounter.textContent = `Question ${index + 1} of ${quizData.length}`;
+
+      // Render options
+      optionsContainer.innerHTML = '';
+      q.options.forEach((opt, optIndex) => {
+        const btn = document.createElement('button');
+        btn.textContent = `${String.fromCharCode(65 + optIndex)}. ${opt}`;
+        btn.dataset.optIndex = optIndex;
+        btn.onclick = () => selectOption(index, optIndex);
+        // If already answered, highlight it
+        if (userAnswers[index] === optIndex) {
+          btn.style.borderColor = '#2a7de1';
+          btn.style.background = '#eef4ff';
+        }
+        // If quiz submitted, show correct/wrong
+        if (quizSubmitted) {
+          btn.disabled = true;
+          if (optIndex === q.correct) {
+            btn.classList.add('correct');
+          } else if (userAnswers[index] === optIndex && userAnswers[index] !== q.correct) {
+            btn.classList.add('wrong');
+          } else if (userAnswers[index] === optIndex) {
+            btn.classList.add('correct');
+          }
+          // show correct answer if user got it wrong
+          if (userAnswers[index] !== q.correct && optIndex === q.correct) {
+            btn.classList.add('show-correct');
+          }
+        } else {
+          btn.disabled = false;
+        }
+        optionsContainer.appendChild(btn);
+      });
+
+      // Update nav buttons
+      prevBtn.disabled = index === 0;
+      if (index === quizData.length - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+      }
+      // Check if all answered to enable submit
+      if (!quizSubmitted && userAnswers.every(a => a !== null)) {
+        submitBtn.style.display = 'inline-block';
+      }
+    }
+
+    function selectOption(qIndex, optIndex) {
+      if (quizSubmitted) return;
+      userAnswers[qIndex] = optIndex;
+      // Update progress tracker
+      const answered = userAnswers.filter(a => a !== null).length;
+      const pct = Math.round((answered / quizData.length) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('completedCount').textContent = Math.min(answered, 7);
+      renderQuestion(currentQuestion);
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+      }
+    }
+
+    function submitQuiz() {
+      if (quizSubmitted) return;
+      const unanswered = userAnswers.some(a => a === null);
+      if (unanswered) {
+        if (!confirm('You have unanswered questions. Are you sure you want to submit?')) return;
+      }
+      quizSubmitted = true;
+      // Disable all options and show results
+      renderQuestion(currentQuestion);
+      showResults();
+      submitBtn.style.display = 'none';
+      resetBtn.style.display = 'inline-block';
+      // Update progress
+      const answered = userAnswers.filter(a => a !== null).length;
+      const pct = Math.round((answered / quizData.length) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('completedCount').textContent = Math.min(answered, 7);
+    }
+
+    function showResults() {
+      let correct = 0;
+      const details = [];
+      quizData.forEach((q, i) => {
+        const userAns = userAnswers[i];
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) correct++;
+        details.push({
+          index: i,
+          question: q.question,
+          userAnswer: userAns !== null ? q.options[userAns] : 'Not answered',
+          correctAnswer: q.options[q.correct],
+          isCorrect: isCorrect
+        });
+      });
+
+      const total = quizData.length;
+      const scorePct = Math.round((correct / total) * 100);
+
+      let html = `
+        <div class="quiz-results">
+          <h3><i class="fas fa-trophy" style="color:#f7c948;"></i> Quiz Results</h3>
+          <div class="score">${correct} / ${total}</div>
+          <p style="font-size:1.2rem; margin-top:0.3rem;">${scorePct}% — ${scorePct >= 80 ? '🌟 Excellent!' : scorePct >= 60 ? '👍 Good job!' : '📚 Keep practicing!'}</p>
+          <div class="details">
+            <h4 style="margin:1rem 0 0.5rem; text-align:left;">Review Answers</h4>
+      `;
+      details.forEach((d, idx) => {
+        html += `
+          <div class="review-item ${d.isCorrect ? 'correct-item' : 'wrong-item'}">
+            <span class="q"><strong>${idx+1}.</strong> ${d.question}</span>
+            <span class="ans">${d.isCorrect ? '✅' : '❌'} Your: ${d.userAnswer} | Correct: ${d.correctAnswer}</span>
+          </div>
+        `;
+      });
+      html += `</div></div>`;
+      quizResults.innerHTML = html;
+      quizResults.style.display = 'block';
+    }
+
+    function resetQuiz() {
+      if (!confirm('Reset the quiz? All progress will be lost.')) return;
+      userAnswers = new Array(quizData.length).fill(null);
+      quizSubmitted = false;
+      currentQuestion = 0;
+      quizResults.style.display = 'none';
+      quizResults.innerHTML = '';
+      submitBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
+      nextBtn.style.display = 'inline-block';
+      renderQuestion(0);
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('completedCount').textContent = '0';
+    }
+
+    // ===================== OTHER FEATURES =====================
+
+    // SEARCH
     function filterProducts() {
       const query = document.getElementById('productSearch').value.toLowerCase();
       const cards = document.querySelectorAll('.product-card');
       cards.forEach(card => {
         const name = card.getAttribute('data-name') || '';
-        const visible = name.includes(query) || query === '';
-        card.style.display = visible ? 'flex' : 'none';
+        card.style.display = name.includes(query) || query === '' ? 'flex' : 'none';
       });
     }
 
-    // ========== FEATURE 2: PROGRESS TRACKER ==========
+    // PROGRESS
     let completed = 3;
     const total = 7;
 
@@ -959,91 +1256,55 @@
       document.getElementById('completedCount').textContent = completed;
       const pct = Math.round((completed / total) * 100);
       document.getElementById('progressFill').style.width = pct + '%';
-      // also update when adding to cart
     }
 
-    // ========== FEATURE 3: MINI QUIZ ==========
-    let quizAnswered = false;
-
-    function checkQuiz(btn, isCorrect) {
-      if (quizAnswered) return;
-      quizAnswered = true;
-      const options = document.querySelectorAll('#quizOptions button');
-      options.forEach(b => b.disabled = true);
-      if (isCorrect) {
-        btn.classList.add('correct');
-        document.getElementById('quizResult').innerHTML = '✅ Correct! Great job!';
-        document.getElementById('quizResult').style.color = '#28a745';
-        completed = Math.min(completed + 1, total);
-        document.getElementById('completedCount').textContent = completed;
-        const pct = Math.round((completed / total) * 100);
-        document.getElementById('progressFill').style.width = pct + '%';
-      } else {
-        btn.classList.add('wrong');
-        document.getElementById('quizResult').innerHTML = '❌ Not quite. The correct answer is "Understanding".';
-        document.getElementById('quizResult').style.color = '#dc3545';
-        // highlight correct
-        document.querySelectorAll('#quizOptions button').forEach(b => {
-          if (b.textContent.trim() === 'Understanding') b.classList.add('correct');
-        });
-      }
-    }
-
-    // ========== FEATURE 4: CART / TOAST ==========
-    let cartCount = 0;
-
+    // CART
     function addToCart(name, price) {
-      cartCount++;
       const msg = `🛒 Added: ${name} (₱${price})`;
       document.getElementById('cartMessage').textContent = msg;
       const toast = document.getElementById('cartToast');
       toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 3000);
-      // update progress when adding items
-      if (cartCount % 2 === 0) {
+      setTimeout(() => toast.classList.remove('show'), 3000);
+      if (Math.random() > 0.5) {
         completed = Math.min(completed + 1, total);
         document.getElementById('completedCount').textContent = completed;
         const pct = Math.round((completed / total) * 100);
         document.getElementById('progressFill').style.width = pct + '%';
       }
-      return false; // prevent page jump
+      return false;
     }
 
     function hideCart() {
       document.getElementById('cartToast').classList.remove('show');
     }
 
-    // ========== FEATURE 5: DARK MODE ==========
+    // DARK MODE
     const darkToggle = document.getElementById('darkToggle');
     darkToggle.addEventListener('click', function() {
       document.body.classList.toggle('dark-mode');
-      const icon = this.querySelector('i');
       if (document.body.classList.contains('dark-mode')) {
-        icon.className = 'fas fa-sun';
         this.innerHTML = '<i class="fas fa-sun"></i> Light';
       } else {
-        icon.className = 'fas fa-moon';
         this.innerHTML = '<i class="fas fa-moon"></i> Dark';
       }
     });
 
-    // smooth scroll
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (href === "#") return;
         e.preventDefault();
         const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
 
-    // init progress
+    // Init quiz
+    renderQuestion(0);
     document.getElementById('completedCount').textContent = completed;
     document.getElementById('totalCount').textContent = total;
     document.getElementById('progressFill').style.width = Math.round((completed/total)*100) + '%';
   </script>
 </body>
-</html> 
+  </html>
