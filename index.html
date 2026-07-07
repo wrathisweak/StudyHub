@@ -186,6 +186,10 @@
     .btn-danger:hover {
       background: #bd2130;
     }
+    .btn-sm {
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+    }
 
     .hero {
       padding: 4rem 0 3.5rem;
@@ -735,6 +739,114 @@
     }
     body.dark-mode .dark-toggle:hover { background: #3a507a; }
 
+    /* mentor modal */
+    .mentor-modal, .quiz-config-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(3px);
+    }
+    .mentor-modal.active, .quiz-config-modal.active {
+      display: flex;
+    }
+    .mentor-modal-content, .quiz-config-content {
+      background: white;
+      border-radius: 40px;
+      padding: 2rem 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      position: relative;
+      transition: background 0.3s;
+    }
+    body.dark-mode .mentor-modal-content,
+    body.dark-mode .quiz-config-content {
+      background: #1f2d47;
+      color: #e8edf5;
+    }
+    .mentor-modal-content h2, .quiz-config-content h2 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .mentor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+    .mentor-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 30px;
+      border: 2px solid #dce7fc;
+      background: transparent;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .mentor-btn:hover {
+      border-color: #2a7de1;
+      background: #eef4ff;
+    }
+    .mentor-btn i {
+      font-size: 1.5rem;
+      color: #2a7de1;
+    }
+    .mentor-btn .mentor-name {
+      font-size: 1rem;
+    }
+    .mentor-btn .mentor-spec {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      font-weight: 400;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: 0.2s;
+      background: none;
+      border: none;
+    }
+    .modal-close:hover { opacity: 1; }
+
+    .quiz-config-content .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .quiz-config-content label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .quiz-config-content select {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      border: 2px solid #dce7fc;
+      background: white;
+      font-size: 1rem;
+    }
+    body.dark-mode .quiz-config-content select {
+      background: #1a2640;
+      color: #e8edf5;
+      border-color: #2f4060;
+    }
+    .quiz-config-content .btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
     @media (max-width: 700px) {
       .nav-flex {
         flex-direction: column;
@@ -766,6 +878,10 @@
         grid-template-columns: 1fr;
       }
       .quiz-container {
+        padding: 1.5rem;
+      }
+      .mentor-modal-content, .quiz-config-content {
+        margin: 1rem;
         padding: 1.5rem;
       }
     }
@@ -811,7 +927,7 @@
         <a href="#quizSection" class="btn btn-outline"><i class="fas fa-pencil-alt"></i> Take a Quiz</a>
       </div>
       <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center; font-size:0.9rem; color:#2e4b7a;">
-        <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> SHS & College</span>
+        <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Elementary, Junior High, And Senior High</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Affordable</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Instant access</span>
         <span><i class="fas fa-check-circle" style="color:#2a7de1;"></i> Reading sessions</span>
@@ -871,16 +987,16 @@
           <div class="desc">Visual slides for lectures & self-study.</div>
           <a href="#" class="btn" style="background:#1f4f9e;" onclick="addToCart('PowerPoint', 39)">Get PPT</a>
         </div>
-        <!-- Practice Quizzes - NOW OPENS THE QUIZ -->
+        <!-- Practice Quizzes - opens config modal -->
         <div class="product-card" data-name="practice quiz quizzes" style="border-color:#2a7de1; border-width:2px;">
           <span class="badge" style="background:#2a7de1; color:white;"><i class="fas fa-star"></i> Interactive</span>
           <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-pencil-alt"></i></div>
           <h3>Practice Quiz</h3>
           <div class="price">Free <small>/ 20 questions</small></div>
           <div class="desc">Test your knowledge with 20 multiple-choice questions.</div>
-          <a href="#quizSection" class="btn" style="background:#1a4a8a;" onclick="document.getElementById('quizSection').scrollIntoView({behavior:'smooth'}); return false;"><i class="fas fa-play"></i> Take Quiz</a>
+          <a href="#" class="btn" style="background:#1a4a8a;" onclick="openQuizConfig(); return false;"><i class="fas fa-play"></i> Take Quiz</a>
         </div>
-        <!-- 30-min session -->
+        <!-- 30-min session with mentor picker -->
         <div class="product-card" data-name="reading session 30 min" style="border-color:#b8d0f5;">
           <span class="badge reading"><i class="far fa-clock"></i> 30 min</span>
           <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-book-reader"></i></div>
@@ -892,9 +1008,9 @@
             <li><i class="fas fa-check-circle"></i> Vocabulary improvement</li>
             <li><i class="fas fa-check-circle"></i> Reading comprehension</li>
           </ul>
-          <a href="#" class="btn" style="background:#1a4a8a;" onclick="addToCart('Reading Session 30min', 50)"><i class="fas fa-calendar-check"></i> Book Session</a>
+          <a href="#" class="btn" style="background:#1a4a8a;" onclick="openMentorModal('Reading Session 30min', 50); return false;"><i class="fas fa-calendar-check"></i> Book Session</a>
         </div>
-        <!-- 1-hour session -->
+        <!-- 1-hour session with mentor picker -->
         <div class="product-card" data-name="reading session 1 hour" style="border-color:#b8d0f5;">
           <span class="badge reading"><i class="far fa-clock"></i> 1 hour</span>
           <div class="product-icon" style="background:#dce7fc; color:#1a4a8a;"><i class="fas fa-chalkboard-teacher"></i></div>
@@ -906,7 +1022,7 @@
             <li><i class="fas fa-check-circle"></i> Personalized feedback</li>
             <li><i class="fas fa-check-circle"></i> In‑depth comprehension</li>
           </ul>
-          <a href="#" class="btn" style="background:#1a4a8a;" onclick="addToCart('Reading Session 1hr', 80)"><i class="fas fa-calendar-check"></i> Book Session</a>
+          <a href="#" class="btn" style="background:#1a4a8a;" onclick="openMentorModal('Reading Session 1hr', 80); return false;"><i class="fas fa-calendar-check"></i> Book Session</a>
         </div>
         <!-- Bundle Offer -->
         <div class="product-card" data-name="reading bundle 5 sessions" style="border-color:#f7d88a; background:#fffcf0;">
@@ -920,7 +1036,7 @@
             <li><i class="fas fa-check-circle" style="color:#b57c1a;"></i> Flexible scheduling</li>
             <li><i class="fas fa-check-circle" style="color:#b57c1a;"></i> All 30‑min benefits</li>
           </ul>
-          <a href="#" class="btn btn-gold" onclick="addToCart('Reading Bundle 5x', 225)"><i class="fas fa-calendar-check"></i> Book Bundle</a>
+          <a href="#" class="btn btn-gold" onclick="openMentorModal('Reading Bundle 5x', 225); return false;"><i class="fas fa-calendar-check"></i> Book Bundle</a>
         </div>
       </div>
 
@@ -941,7 +1057,7 @@
     </div>
   </section>
 
-  <!-- ===== FULL QUIZ SECTION ===== -->
+  <!-- ===== QUIZ SECTION ===== -->
   <section id="quizSection" style="padding: 2rem 0 4rem; scroll-margin-top: 80px;">
     <div class="container">
       <div class="quiz-container" id="quizContainer">
@@ -969,11 +1085,61 @@
           </div>
         </div>
 
-        <!-- Results Area (hidden initially) -->
+        <!-- Results Area -->
         <div id="quizResults" style="display:none;"></div>
       </div>
     </div>
   </section>
+
+  <!-- MENTOR MODAL -->
+  <div class="mentor-modal" id="mentorModal">
+    <div class="mentor-modal-content">
+      <button class="modal-close" onclick="closeMentorModal()">&times;</button>
+      <h2><i class="fas fa-chalkboard-teacher"></i> Choose your mentor</h2>
+      <p style="margin-bottom: 1rem; opacity:0.8;">Select a coach for your reading session.</p>
+      <div class="mentor-list">
+        <button class="mentor-btn" onclick="selectMentor('Dr. Daniel Arguelles', 'Reading Specialist', '🌟')">
+          <i class="fas fa-user-graduate"></i>
+          <div><span class="mentor-name">Dr. Daniel Arguelles</span><br><span class="mentor-spec">Reading Specialist · 8 yrs</span></div>
+        </button>
+        <button class="mentor-btn" onclick="selectMentor('Mr. Calvin Chiva', 'ESL Coach', '📘')">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <div><span class="mentor-name">Mr. Calvin Chiva</span><br><span class="mentor-spec">ESL Coach · 5 yrs</span></div>
+        </button>
+        <button class="mentor-btn" onclick="selectMentor('Ms. Shane Sope', 'Literacy Tutor', '📖')">
+          <i class="fas fa-book-reader"></i>
+          <div><span class="mentor-name">Ms. Shane</span><br><span class="mentor-spec">Literacy Tutor · 6 yrs</span></div>
+        </button>
+      </div>
+      <p style="font-size:0.85rem; opacity:0.6; margin-top:0.5rem;"><i class="fas fa-info-circle"></i> You'll be able to schedule after booking.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ CONFIG MODAL -->
+  <div class="quiz-config-modal" id="quizConfigModal">
+    <div class="quiz-config-content">
+      <button class="modal-close" onclick="closeQuizConfig()">&times;</button>
+      <h2><i class="fas fa-cog"></i> Quiz Setup</h2>
+      <p style="margin-bottom: 1.2rem; opacity:0.8;">Choose subject and difficulty for your 20-item quiz.</p>
+      <div class="form-group">
+        <label for="quizSubject">Subject</label>
+        <select id="quizSubject">
+          <option value="math">Mathematics</option>
+          <option value="science">Science</option>
+          <option value="english">English</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="quizLevel">Difficulty / Grade Level</label>
+        <select id="quizLevel">
+          <option value="elementary">Elementary</option>
+          <option value="junior">Junior High</option>
+          <option value="senior">Senior High</option>
+        </select>
+      </div>
+      <button class="btn" onclick="startQuizFromConfig()"><i class="fas fa-play"></i> Start Quiz</button>
+    </div>
+  </div>
 
   <!-- CTA -->
   <div class="cta-section">
@@ -1001,8 +1167,8 @@
         <div id="contact">
           <h4><i class="fas fa-envelope"></i> Contact</h4>
           <ul>
-            <li><a href="#"><i class="fas fa-envelope"></i> hello@studyhub.ph</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i> +63 912 3456 789</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> rpapastudyhub@gmail.com</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> +63 917 721 0453</a></li>
           </ul>
         </div>
         <div>
@@ -1013,9 +1179,9 @@
             <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
           </div>
           <div style="margin-top:0.8rem;">
-            <a href="#" style="opacity:0.8;"><i class="fab fa-facebook"></i> /StudyHubPH</a><br>
-            <a href="#" style="opacity:0.8;"><i class="fab fa-instagram"></i> @studyhub.ph</a><br>
-            <a href="#" style="opacity:0.8;"><i class="fab fa-tiktok"></i> @studyhub</a>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-facebook"></i> RPAPAStudyHub</a><br>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-instagram"></i> @rpapastudyhub</a><br>
+            <a href="#" style="opacity:0.8;"><i class="fab fa-tiktok"></i> @rpapastudyhub</a>
           </div>
         </div>
         <div>
@@ -1042,34 +1208,219 @@
   </div>
 
   <script>
-    // ===================== QUIZ DATA (20 questions) =====================
-    const quizData = [
-      { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "NaCl", "HCl"], correct: 0 },
-      { question: "What is the largest planet in our solar system?", options: ["Earth", "Saturn", "Jupiter", "Neptune"], correct: 2 },
-      { question: "What is the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi"], correct: 2 },
-      { question: "What is the atomic number of Carbon?", options: ["6", "8", "12", "14"], correct: 0 },
-      { question: "What is the main gas in the Earth's atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], correct: 1 },
-      { question: "What is the square root of 144?", options: ["10", "11", "12", "13"], correct: 2 },
-      { question: "What is the capital of France?", options: ["London", "Paris", "Rome", "Madrid"], correct: 1 },
-      { question: "What is the chemical formula for table salt?", options: ["NaCl", "KCl", "CaCO3", "NaOH"], correct: 0 },
-      { question: "What is the speed of light approximately?", options: ["3x10^6 m/s", "3x10^8 m/s", "3x10^10 m/s", "3x10^4 m/s"], correct: 1 },
-      { question: "What is the study of living organisms?", options: ["Physics", "Chemistry", "Biology", "Geology"], correct: 2 },
-      { question: "What is the main function of the human heart?", options: ["Pump blood", "Filter waste", "Produce energy", "Store nutrients"], correct: 0 },
-      { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correct: 2 },
-      { question: "What is the primary language spoken in Brazil?", options: ["Spanish", "Portuguese", "English", "French"], correct: 1 },
-      { question: "What is the chemical symbol for Gold?", options: ["Au", "Ag", "Fe", "Cu"], correct: 0 },
-      { question: "What is the longest bone in the human body?", options: ["Tibia", "Femur", "Humerus", "Radius"], correct: 1 },
-      { question: "What is the value of Pi (π) to two decimal places?", options: ["3.14", "3.16", "3.12", "3.18"], correct: 0 },
-      { question: "What is the main function of chloroplasts?", options: ["Photosynthesis", "Respiration", "Digestion", "Excretion"], correct: 0 },
-      { question: "What is the tallest mountain in the world?", options: ["K2", "Everest", "Kangchenjunga", "Lhotse"], correct: 1 },
-      { question: "What is the largest ocean on Earth?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], correct: 2 },
-      { question: "What is the chemical symbol for Oxygen?", options: ["O", "Ox", "Om", "Og"], correct: 0 }
-    ];
+    // ===================== QUIZ DATA (20 questions per subject/level) =====================
+    const quizBank = {
+      math: {
+        elementary: [
+          { question: "What is 2 + 3?", options: ["4", "5", "6", "7"], correct: 1 },
+          { question: "What is 10 - 4?", options: ["5", "6", "7", "8"], correct: 1 },
+          { question: "What is 3 x 4?", options: ["10", "11", "12", "13"], correct: 2 },
+          { question: "What is 15 ÷ 3?", options: ["3", "4", "5", "6"], correct: 2 },
+          { question: "What is the next number: 2, 4, 6, 8, ?", options: ["9", "10", "11", "12"], correct: 1 },
+          { question: "What is 7 + 8?", options: ["14", "15", "16", "17"], correct: 1 },
+          { question: "What is 20 - 6?", options: ["12", "13", "14", "15"], correct: 2 },
+          { question: "What is 6 x 6?", options: ["30", "32", "34", "36"], correct: 3 },
+          { question: "What is 24 ÷ 4?", options: ["4", "5", "6", "7"], correct: 2 },
+          { question: "What is 100 - 37?", options: ["63", "64", "65", "66"], correct: 0 },
+          { question: "What is 5 x 5?", options: ["20", "25", "30", "35"], correct: 1 },
+          { question: "What is 18 ÷ 2?", options: ["6", "7", "8", "9"], correct: 3 },
+          { question: "What is 9 + 11?", options: ["18", "19", "20", "21"], correct: 2 },
+          { question: "What is 30 - 12?", options: ["16", "17", "18", "19"], correct: 2 },
+          { question: "What is 7 x 8?", options: ["48", "50", "54", "56"], correct: 3 },
+          { question: "What is 45 ÷ 5?", options: ["7", "8", "9", "10"], correct: 2 },
+          { question: "What is 12 + 15?", options: ["25", "26", "27", "28"], correct: 2 },
+          { question: "What is 50 - 22?", options: ["26", "27", "28", "29"], correct: 2 },
+          { question: "What is 9 x 9?", options: ["72", "79", "81", "91"], correct: 2 },
+          { question: "What is 64 ÷ 8?", options: ["6", "7", "8", "9"], correct: 2 }
+        ],
+        junior: [
+          { question: "Solve: 3x + 5 = 20", options: ["3", "5", "7", "10"], correct: 1 },
+          { question: "What is the slope of y = 2x + 3?", options: ["2", "3", "5", "1"], correct: 0 },
+          { question: "What is 2³ + 4²?", options: ["16", "20", "24", "28"], correct: 2 },
+          { question: "Simplify: 4x - 2x + 6", options: ["2x+6", "6x+6", "4x+6", "8x+6"], correct: 0 },
+          { question: "What is √81?", options: ["7", "8", "9", "10"], correct: 2 },
+          { question: "What is 25% of 200?", options: ["40", "50", "60", "70"], correct: 1 },
+          { question: "Solve: x/4 = 8", options: ["2", "4", "16", "32"], correct: 3 },
+          { question: "What is the area of a triangle with base 6 and height 4?", options: ["10", "12", "14", "16"], correct: 1 },
+          { question: "What is the GCF of 12 and 18?", options: ["3", "6", "9", "12"], correct: 1 },
+          { question: "Simplify: 5(x+2) - 3", options: ["5x+7", "5x+10", "5x+13", "5x+2"], correct: 0 },
+          { question: "What is 7² - 3²?", options: ["36", "40", "44", "48"], correct: 1 },
+          { question: "Solve: 2x - 3 = 11", options: ["4", "5", "6", "7"], correct: 3 },
+          { question: "What is the LCM of 4 and 6?", options: ["8", "10", "12", "14"], correct: 2 },
+          { question: "What is the perimeter of a square with side 7?", options: ["21", "24", "28", "30"], correct: 2 },
+          { question: "Simplify: 3(x+4) - 2x", options: ["x+12", "x+4", "5x+12", "x+8"], correct: 0 },
+          { question: "What is 6³?", options: ["180", "200", "216", "226"], correct: 2 },
+          { question: "Solve: 5x + 2 = 17", options: ["2", "3", "4", "5"], correct: 1 },
+          { question: "What is the slope of a vertical line?", options: ["0", "1", "undefined", "∞"], correct: 2 },
+          { question: "What is 15% of 300?", options: ["35", "40", "45", "50"], correct: 2 },
+          { question: "What is the area of a circle with radius 5? (π=3.14)", options: ["78.5", "79", "80", "81"], correct: 0 }
+        ],
+        senior: [
+          { question: "What is the derivative of x²?", options: ["2x", "x²", "2", "x"], correct: 0 },
+          { question: "What is the integral of 2x?", options: ["x²", "2x²", "x²+C", "2x+C"], correct: 2 },
+          { question: "Solve: log₂(8) = ?", options: ["2", "3", "4", "5"], correct: 1 },
+          { question: "What is the limit of (x²-1)/(x-1) as x→1?", options: ["0", "1", "2", "3"], correct: 2 },
+          { question: "What is the complex conjugate of 3+4i?", options: ["3-4i", "-3+4i", "3+4i", "-3-4i"], correct: 0 },
+          { question: "What is the determinant of [[1,2],[3,4]]?", options: ["-2", "2", "4", "6"], correct: 0 },
+          { question: "What is the sum of the roots of x² - 5x + 6 = 0?", options: ["5", "-5", "6", "-6"], correct: 0 },
+          { question: "What is the product of the roots of x² - 5x + 6 = 0?", options: ["6", "-6", "5", "-5"], correct: 0 },
+          { question: "What is the derivative of sin(x)?", options: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"], correct: 0 },
+          { question: "What is the integral of cos(x)?", options: ["sin(x)", "-sin(x)", "cos(x)", "tan(x)"], correct: 0 },
+          { question: "What is the Laplace transform of 1?", options: ["1/s", "s", "1/s²", "s²"], correct: 0 },
+          { question: "What is the Fourier transform of a delta function?", options: ["1", "δ", "e", "π"], correct: 0 },
+          { question: "What is the Taylor series of e^x?", options: ["∑xⁿ/n!", "∑nxⁿ", "∑xⁿ", "∑xⁿ/n"], correct: 0 },
+          { question: "What is the Maclaurin series for sin(x)?", options: ["x - x³/3! + x⁵/5!...", "x + x³/3!...", "x²/2!...", "1 - x²/2!..."], correct: 0 },
+          { question: "What is the value of sin(π/2)?", options: ["0", "1", "-1", "2"], correct: 1 },
+          { question: "What is the value of cos(π)?", options: ["0", "1", "-1", "2"], correct: 2 },
+          { question: "What is tan(π/4)?", options: ["0", "1", "-1", "√2"], correct: 1 },
+          { question: "What is the limit of sin(x)/x as x→0?", options: ["0", "1", "∞", "π"], correct: 1 },
+          { question: "What is the derivative of ln(x)?", options: ["1/x", "x", "ln(x)", "e^x"], correct: 0 },
+          { question: "What is the integral of 1/x?", options: ["ln|x|", "x²/2", "e^x", "sin(x)"], correct: 0 }
+        ]
+      },
+      science: {
+        elementary: [
+          { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "NaCl", "HCl"], correct: 0 },
+          { question: "What is the largest planet in our solar system?", options: ["Earth", "Saturn", "Jupiter", "Neptune"], correct: 2 },
+          { question: "What is the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi"], correct: 2 },
+          { question: "What is the atomic number of Carbon?", options: ["6", "8", "12", "14"], correct: 0 },
+          { question: "What is the main gas in the Earth's atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], correct: 1 },
+          { question: "What is the speed of light approximately?", options: ["3x10^6 m/s", "3x10^8 m/s", "3x10^10 m/s", "3x10^4 m/s"], correct: 1 },
+          { question: "What is the study of living organisms?", options: ["Physics", "Chemistry", "Biology", "Geology"], correct: 2 },
+          { question: "What is the main function of the human heart?", options: ["Pump blood", "Filter waste", "Produce energy", "Store nutrients"], correct: 0 },
+          { question: "What is the chemical symbol for Oxygen?", options: ["O", "Ox", "Om", "Og"], correct: 0 },
+          { question: "What is the largest ocean on Earth?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], correct: 2 },
+          { question: "What is the chemical symbol for Gold?", options: ["Au", "Ag", "Fe", "Cu"], correct: 0 },
+          { question: "What is the longest bone in the human body?", options: ["Tibia", "Femur", "Humerus", "Radius"], correct: 1 },
+          { question: "What is the main function of chloroplasts?", options: ["Photosynthesis", "Respiration", "Digestion", "Excretion"], correct: 0 },
+          { question: "What is the tallest mountain in the world?", options: ["K2", "Everest", "Kangchenjunga", "Lhotse"], correct: 1 },
+          { question: "What is the chemical symbol for Sodium?", options: ["Na", "So", "S", "N"], correct: 0 },
+          { question: "What is the pH of pure water?", options: ["5", "6", "7", "8"], correct: 2 },
+          { question: "What is the main component of the sun?", options: ["Hydrogen", "Helium", "Carbon", "Oxygen"], correct: 0 },
+          { question: "What is the process by which plants make food?", options: ["Photosynthesis", "Respiration", "Digestion", "Excretion"], correct: 0 },
+          { question: "What is the chemical formula for carbon dioxide?", options: ["CO", "CO2", "C2O", "C2O2"], correct: 1 },
+          { question: "What is the unit of force?", options: ["Newton", "Joule", "Watt", "Pascal"], correct: 0 }
+        ],
+        junior: [
+          { question: "What is the chemical symbol for Calcium?", options: ["Ca", "C", "Cl", "Cu"], correct: 0 },
+          { question: "What is the atomic number of Oxygen?", options: ["6", "8", "10", "12"], correct: 1 },
+          { question: "What is the formula for sulfuric acid?", options: ["H2SO4", "HCl", "HNO3", "H2CO3"], correct: 0 },
+          { question: "What is the main function of red blood cells?", options: ["Carry oxygen", "Fight infection", "Clot blood", "Produce antibodies"], correct: 0 },
+          { question: "What is the largest organ in the human body?", options: ["Skin", "Liver", "Brain", "Heart"], correct: 0 },
+          { question: "What is the process of cell division called?", options: ["Mitosis", "Meiosis", "Cytokinesis", "Interphase"], correct: 0 },
+          { question: "What is the chemical formula for sodium chloride?", options: ["NaCl", "KCl", "CaCl2", "MgCl2"], correct: 0 },
+          { question: "What is the main component of the Earth's crust?", options: ["Silica", "Oxygen", "Aluminum", "Iron"], correct: 0 },
+          { question: "What is the unit of electrical resistance?", options: ["Ohm", "Volt", "Ampere", "Watt"], correct: 0 },
+          { question: "What is the chemical symbol for Mercury?", options: ["Hg", "Me", "Mr", "M"], correct: 0 },
+          { question: "What is the main function of the nervous system?", options: ["Transmit signals", "Transport nutrients", "Produce energy", "Filter waste"], correct: 0 },
+          { question: "What is the formula for ammonia?", options: ["NH3", "NH4", "NO3", "NO2"], correct: 0 },
+          { question: "What is the largest animal on Earth?", options: ["Blue whale", "Elephant", "Giraffe", "Orca"], correct: 0 },
+          { question: "What is the boiling point of water in Celsius?", options: ["100", "0", "50", "150"], correct: 0 },
+          { question: "What is the main function of the lungs?", options: ["Gas exchange", "Filter blood", "Produce enzymes", "Store nutrients"], correct: 0 },
+          { question: "What is the chemical symbol for Lead?", options: ["Pb", "Le", "Ld", "Pl"], correct: 0 },
+          { question: "What is the unit of work?", options: ["Joule", "Newton", "Watt", "Pascal"], correct: 0 },
+          { question: "What is the main component of the cell membrane?", options: ["Phospholipids", "Proteins", "Carbohydrates", "Nucleic acids"], correct: 0 },
+          { question: "What is the formula for hydrochloric acid?", options: ["HCl", "H2SO4", "HNO3", "H2CO3"], correct: 0 },
+          { question: "What is the process of DNA replication called?", options: ["Synthesis", "Transcription", "Translation", "Replication"], correct: 0 }
+        ],
+        senior: [
+          { question: "What is the quantum number l for an s orbital?", options: ["0", "1", "2", "3"], correct: 0 },
+          { question: "What is the highest oxidation state of Mn?", options: ["+7", "+6", "+5", "+4"], correct: 0 },
+          { question: "What is the product of the Krebs cycle?", options: ["ATP", "Glucose", "Oxygen", "Water"], correct: 0 },
+          { question: "What is the function of RNA polymerase?", options: ["Synthesize RNA", "Synthesize DNA", "Translate proteins", "Replicate DNA"], correct: 0 },
+          { question: "What is the pH of a 0.1 M HCl solution?", options: ["1", "2", "3", "4"], correct: 0 },
+          { question: "What is the half-life of Carbon-14?", options: ["5730 years", "5000 years", "6000 years", "7000 years"], correct: 0 },
+          { question: "What is the standard cell potential for a galvanic cell?", options: ["Positive", "Negative", "Zero", "Undefined"], correct: 0 },
+          { question: "What is the main force holding atoms together in a molecule?", options: ["Covalent bond", "Ionic bond", "Hydrogen bond", "Van der Waals"], correct: 0 },
+          { question: "What is the chemical formula for glucose?", options: ["C6H12O6", "C12H22O11", "C6H10O5", "C5H10O5"], correct: 0 },
+          { question: "What is the process of converting glucose to ATP called?", options: ["Cellular respiration", "Photosynthesis", "Fermentation", "Glycolysis"], correct: 0 },
+          { question: "What is the function of the Golgi apparatus?", options: ["Package proteins", "Synthesize lipids", "Produce energy", "Store DNA"], correct: 0 },
+          { question: "What is the chemical symbol for Potassium?", options: ["K", "P", "Po", "Ka"], correct: 0 },
+          { question: "What is the unit of entropy?", options: ["J/K", "J", "K", "J/mol"], correct: 0 },
+          { question: "What is the main gas in the Sun?", options: ["Hydrogen", "Helium", "Carbon", "Oxygen"], correct: 0 },
+          { question: "What is the process of gene expression called?", options: ["Transcription and translation", "Replication", "Mutation", "Repair"], correct: 0 },
+          { question: "What is the chemical formula for methane?", options: ["CH4", "C2H6", "C3H8", "C4H10"], correct: 0 },
+          { question: "What is the function of DNA polymerase?", options: ["Replicate DNA", "Synthesize RNA", "Translate proteins", "Repair DNA"], correct: 0 },
+          { question: "What is the half-life of Uranium-238?", options: ["4.5 billion years", "4.5 million years", "4.5 thousand years", "4.5 years"], correct: 0 },
+          { question: "What is the main component of the ozone layer?", options: ["O3", "O2", "O", "O4"], correct: 0 },
+          { question: "What is the function of the immune system?", options: ["Fight infection", "Transport nutrients", "Produce energy", "Regulate temperature"], correct: 0 }
+        ]
+      },
+      english: {
+        elementary: [
+          { question: "What is the plural of 'child'?", options: ["Childs", "Children", "Childes", "Childrens"], correct: 1 },
+          { question: "What is the past tense of 'go'?", options: ["Goed", "Went", "Gone", "Going"], correct: 1 },
+          { question: "What is the synonym of 'happy'?", options: ["Sad", "Joyful", "Angry", "Tired"], correct: 1 },
+          { question: "What is the antonym of 'big'?", options: ["Large", "Small", "Huge", "Tall"], correct: 1 },
+          { question: "What is the plural of 'mouse'?", options: ["Mouses", "Mice", "Mices", "Mouse"], correct: 1 },
+          { question: "What is the past tense of 'eat'?", options: ["Eated", "Ate", "Eaten", "Eating"], correct: 1 },
+          { question: "What is the synonym of 'fast'?", options: ["Slow", "Quick", "Lazy", "Calm"], correct: 1 },
+          { question: "What is the antonym of 'hot'?", options: ["Warm", "Cold", "Cool", "Burning"], correct: 1 },
+          { question: "What is the plural of 'foot'?", options: ["Foots", "Feet", "Feets", "Footes"], correct: 1 },
+          { question: "What is the past tense of 'run'?", options: ["Ran", "Runned", "Running", "Runs"], correct: 0 },
+          { question: "What is the synonym of 'small'?", options: ["Tiny", "Big", "Large", "Huge"], correct: 0 },
+          { question: "What is the antonym of 'dark'?", options: ["Light", "Bright", "Dim", "Shady"], correct: 0 },
+          { question: "What is the plural of 'goose'?", options: ["Gooses", "Geese", "Goose", "Geeses"], correct: 1 },
+          { question: "What is the past tense of 'write'?", options: ["Wrote", "Written", "Writing", "Writes"], correct: 0 },
+          { comment: "What is the synonym of 'angry'?", options: ["Mad", "Happy", "Calm", "Peaceful"], correct: 0 },
+          { question: "What is the antonym of 'sweet'?", options: ["Sour", "Bitter", "Salty", "Spicy"], correct: 0 },
+          { question: "What is the plural of 'sheep'?", options: ["Sheep", "Sheeps", "Sheepes", "Sheepies"], correct: 0 },
+          { question: "What is the past tense of 'swim'?", options: ["Swam", "Swum", "Swimming", "Swims"], correct: 0 },
+          { question: "What is the synonym of 'shout'?", options: ["Whisper", "Yell", "Mumble", "Silence"], correct: 1 },
+          { question: "What is the antonym of 'win'?", options: ["Lose", "Fail", "Success", "Victory"], correct: 0 }
+        ],
+        junior: [
+          { question: "What is the past participle of 'write'?", options: ["Wrote", "Written", "Writing", "Writes"], correct: 1 },
+          { question: "What is the plural of 'cactus'?", options: ["Cactuses", "Cacti", "Cactus", "Cactis"], correct: 1 },
+          { question: "What is the correct punctuation: 'Its a beautiful day'", options: ["It's a beautiful day", "Its a beautiful day", "It is a beautiful day", "Its' a beautiful day"], correct: 0 },
+          { question: "What is the adverb in: 'She ran quickly'", options: ["She", "Ran", "Quickly", "None"], correct: 2 },
+          { question: "What is the synonym of 'analyze'?", options: ["Examine", "Ignore", "Forget", "Miss"], correct: 0 },
+          { question: "What is the antonym of 'increase'?", options: ["Decrease", "Grow", "Rise", "Expand"], correct: 0 },
+          { question: "What is the correct form: 'He ____ to school every day'", options: ["Go", "Goes", "Going", "Gone"], correct: 1 },
+          { question: "What is the plural of 'fish'?", options: ["Fish", "Fishes", "Fishies", "Fishs"], correct: 0 },
+          { question: "What is the past tense of 'begin'?", options: ["Began", "Begun", "Beginning", "Begins"], correct: 0 },
+          { question: "What is the synonym of 'difficult'?", options: ["Easy", "Hard", "Simple", "Soft"], correct: 1 },
+          { question: "What is the antonym of 'success'?", options: ["Failure", "Win", "Victory", "Achievement"], correct: 0 },
+          { question: "What is the correct punctuation: 'She said hello'", options: ["She said, hello", "She said hello", "She said 'hello'", "She said: hello"], correct: 2 },
+          { question: "What is the plural of 'foot'?", options: ["Foots", "Feet", "Feets", "Footes"], correct: 1 },
+          { question: "What is the past tense of 'drink'?", options: ["Drunk", "Drank", "Drinking", "Drinks"], correct: 1 },
+          { question: "What is the synonym of 'happy'?", options: ["Joyful", "Sad", "Angry", "Tired"], correct: 0 },
+          { question: "What is the antonym of 'cheap'?", options: ["Expensive", "Good", "Bad", "Poor"], correct: 0 },
+          { question: "What is the plural of 'deer'?", options: ["Deers", "Deer", "Deeres", "Dear"], correct: 1 },
+          { question: "What is the past tense of 'speak'?", options: ["Spoke", "Spoken", "Speaking", "Speaks"], correct: 0 },
+          { question: "What is the synonym of 'big'?", options: ["Large", "Small", "Tiny", "Little"], correct: 0 },
+          { question: "What is the antonym of 'weak'?", options: ["Strong", "Frail", "Light", "Delicate"], correct: 0 }
+        ],
+        senior: [
+          { question: "What is the correct use of 'whom'?", options: ["Whom are you?", "Who are you?", "Whom is there?", "Who is there?"], correct: 0 },
+          { question: "What is the synonym of 'ubiquitous'?", options: ["Everywhere", "Rare", "Scarce", "Limited"], correct: 0 },
+          { question: "What is the antonym of 'ephemeral'?", options: ["Permanent", "Temporary", "Short", "Brief"], correct: 0 },
+          { question: "What is the correct form: 'If I ____ you, I would go'", options: ["Was", "Were", "Am", "Be"], correct: 1 },
+          { question: "What is the meaning of 'benevolent'?", options: ["Kind", "Cruel", "Mean", "Harsh"], correct: 0 },
+          { question: "What is the meaning of 'profound'?", options: ["Deep", "Shallow", "Easy", "Simple"], correct: 0 },
+          { question: "What is the correct use of 'its' and 'it's'?", options: ["It's is a contraction", "Its is a possessive", "Both", "None"], correct: 2 },
+          { question: "What is the synonym of 'eloquent'?", options: ["Fluent", "Silent", "Dull", "Boring"], correct: 0 },
+          { question: "What is the antonym of 'ardent'?", options: ["Lukewarm", "Passionate", "Intense", "Fervent"], correct: 0 },
+          { question: "What is the meaning of 'epitome'?", options: ["Perfect example", "Opposite", "Unusual", "Common"], correct: 0 },
+          { question: "What is the correct form: 'I ____ him yesterday'", options: ["Saw", "Seen", "See", "Seeing"], correct: 0 },
+          { question: "What is the meaning of 'ambivalent'?", options: ["Mixed feelings", "Certain", "Positive", "Negative"], correct: 0 },
+          { question: "What is the synonym of 'volatile'?", options: ["Unstable", "Stable", "Calm", "Peaceful"], correct: 0 },
+          { question: "What is the antonym of 'insidious'?", options: ["Open", "Sneaky", "Cunning", "Devious"], correct: 0 },
+          { question: "What is the meaning of 'quintessential'?", options: ["Perfect example", "Rare", "Unusual", "Common"], correct: 0 },
+          { question: "What is the correct use of 'affect' and 'effect'?", options: ["Affect is a verb", "Effect is a noun", "Both", "None"], correct: 2 },
+          { question: "What is the meaning of 'obtuse'?", options: ["Stupid", "Sharp", "Clever", "Bright"], correct: 0 },
+          { question: "What is the synonym of 'verbose'?", options: ["Wordy", "Brief", "Short", "Concise"], correct: 0 },
+          { question: "What is the antonym of 'pragmatic'?", options: ["Unrealistic", "Practical", "Realistic", "Sensible"], correct: 0 },
+          { question: "What is the meaning of 'esoteric'?", options: ["Intended for few", "Common", "Popular", "Widespread"], correct: 0 }
+        ]
+      }
+    };
 
     // ===================== QUIZ STATE =====================
     let currentQuestion = 0;
-    let userAnswers = new Array(quizData.length).fill(null);
+    let userAnswers = [];
     let quizSubmitted = false;
+    let currentQuizData = [];
 
     // DOM refs
     const questionText = document.getElementById('questionText');
@@ -1084,24 +1435,22 @@
     const quizQuestionArea = document.getElementById('quizQuestionArea');
 
     function renderQuestion(index) {
-      const q = quizData[index];
+      if (!currentQuizData.length) return;
+      const q = currentQuizData[index];
       questionText.textContent = `${index + 1}. ${q.question}`;
       currentQDisplay.textContent = index + 1;
-      questionCounter.textContent = `Question ${index + 1} of ${quizData.length}`;
+      questionCounter.textContent = `Question ${index + 1} of ${currentQuizData.length}`;
 
-      // Render options
       optionsContainer.innerHTML = '';
       q.options.forEach((opt, optIndex) => {
         const btn = document.createElement('button');
         btn.textContent = `${String.fromCharCode(65 + optIndex)}. ${opt}`;
         btn.dataset.optIndex = optIndex;
         btn.onclick = () => selectOption(index, optIndex);
-        // If already answered, highlight it
         if (userAnswers[index] === optIndex) {
           btn.style.borderColor = '#2a7de1';
           btn.style.background = '#eef4ff';
         }
-        // If quiz submitted, show correct/wrong
         if (quizSubmitted) {
           btn.disabled = true;
           if (optIndex === q.correct) {
@@ -1111,7 +1460,6 @@
           } else if (userAnswers[index] === optIndex) {
             btn.classList.add('correct');
           }
-          // show correct answer if user got it wrong
           if (userAnswers[index] !== q.correct && optIndex === q.correct) {
             btn.classList.add('show-correct');
           }
@@ -1121,16 +1469,14 @@
         optionsContainer.appendChild(btn);
       });
 
-      // Update nav buttons
       prevBtn.disabled = index === 0;
-      if (index === quizData.length - 1) {
+      if (index === currentQuizData.length - 1) {
         nextBtn.style.display = 'none';
         submitBtn.style.display = 'inline-block';
       } else {
         nextBtn.style.display = 'inline-block';
         submitBtn.style.display = 'none';
       }
-      // Check if all answered to enable submit
       if (!quizSubmitted && userAnswers.every(a => a !== null)) {
         submitBtn.style.display = 'inline-block';
       }
@@ -1139,16 +1485,15 @@
     function selectOption(qIndex, optIndex) {
       if (quizSubmitted) return;
       userAnswers[qIndex] = optIndex;
-      // Update progress tracker
       const answered = userAnswers.filter(a => a !== null).length;
-      const pct = Math.round((answered / quizData.length) * 100);
+      const pct = Math.round((answered / currentQuizData.length) * 100);
       document.getElementById('progressFill').style.width = pct + '%';
       document.getElementById('completedCount').textContent = Math.min(answered, 7);
       renderQuestion(currentQuestion);
     }
 
     function nextQuestion() {
-      if (currentQuestion < quizData.length - 1) {
+      if (currentQuestion < currentQuizData.length - 1) {
         currentQuestion++;
         renderQuestion(currentQuestion);
       }
@@ -1168,14 +1513,12 @@
         if (!confirm('You have unanswered questions. Are you sure you want to submit?')) return;
       }
       quizSubmitted = true;
-      // Disable all options and show results
       renderQuestion(currentQuestion);
       showResults();
       submitBtn.style.display = 'none';
       resetBtn.style.display = 'inline-block';
-      // Update progress
       const answered = userAnswers.filter(a => a !== null).length;
-      const pct = Math.round((answered / quizData.length) * 100);
+      const pct = Math.round((answered / currentQuizData.length) * 100);
       document.getElementById('progressFill').style.width = pct + '%';
       document.getElementById('completedCount').textContent = Math.min(answered, 7);
     }
@@ -1183,7 +1526,7 @@
     function showResults() {
       let correct = 0;
       const details = [];
-      quizData.forEach((q, i) => {
+      currentQuizData.forEach((q, i) => {
         const userAns = userAnswers[i];
         const isCorrect = userAns === q.correct;
         if (isCorrect) correct++;
@@ -1196,7 +1539,7 @@
         });
       });
 
-      const total = quizData.length;
+      const total = currentQuizData.length;
       const scorePct = Math.round((correct / total) * 100);
 
       let html = `
@@ -1222,7 +1565,7 @@
 
     function resetQuiz() {
       if (!confirm('Reset the quiz? All progress will be lost.')) return;
-      userAnswers = new Array(quizData.length).fill(null);
+      userAnswers = new Array(currentQuizData.length).fill(null);
       quizSubmitted = false;
       currentQuestion = 0;
       quizResults.style.display = 'none';
@@ -1235,9 +1578,83 @@
       document.getElementById('completedCount').textContent = '0';
     }
 
+    // ===================== QUIZ CONFIG =====================
+    function openQuizConfig() {
+      document.getElementById('quizConfigModal').classList.add('active');
+    }
+
+    function closeQuizConfig() {
+      document.getElementById('quizConfigModal').classList.remove('active');
+    }
+
+    function startQuizFromConfig() {
+      const subject = document.getElementById('quizSubject').value;
+      const level = document.getElementById('quizLevel').value;
+      const bank = quizBank[subject] && quizBank[subject][level];
+      if (!bank) {
+        alert('No quiz data for this selection.');
+        return;
+      }
+      // Shuffle and pick 20 (or less if bank has fewer)
+      const shuffled = [...bank].sort(() => Math.random() - 0.5);
+      currentQuizData = shuffled.slice(0, 20);
+      while (currentQuizData.length < 20) {
+        // if less than 20, duplicate some
+        currentQuizData.push(...shuffled.slice(0, 20 - currentQuizData.length));
+      }
+      userAnswers = new Array(currentQuizData.length).fill(null);
+      quizSubmitted = false;
+      currentQuestion = 0;
+      quizResults.style.display = 'none';
+      quizResults.innerHTML = '';
+      submitBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
+      nextBtn.style.display = 'inline-block';
+      closeQuizConfig();
+      document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+      renderQuestion(0);
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('completedCount').textContent = '0';
+    }
+
+    // ===================== MENTOR MODAL =====================
+    let pendingMentorProduct = null;
+    let pendingMentorPrice = null;
+
+    function openMentorModal(name, price) {
+      pendingMentorProduct = name;
+      pendingMentorPrice = price;
+      document.getElementById('mentorModal').classList.add('active');
+    }
+
+    function closeMentorModal() {
+      document.getElementById('mentorModal').classList.remove('active');
+      pendingMentorProduct = null;
+      pendingMentorPrice = null;
+    }
+
+    function selectMentor(name, spec, icon) {
+      if (pendingMentorProduct && pendingMentorPrice !== null) {
+        const msg = `🛒 ${pendingMentorProduct} with ${name} (${spec}) — ₱${pendingMentorPrice}`;
+        addToCartWithMsg(msg);
+      }
+      closeMentorModal();
+    }
+
+    function addToCartWithMsg(msg) {
+      document.getElementById('cartMessage').textContent = msg;
+      const toast = document.getElementById('cartToast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+      // update progress
+      completed = Math.min(completed + 1, total);
+      document.getElementById('completedCount').textContent = completed;
+      const pct = Math.round((completed / total) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+    }
+
     // ===================== OTHER FEATURES =====================
 
-    // SEARCH
     function filterProducts() {
       const query = document.getElementById('productSearch').value.toLowerCase();
       const cards = document.querySelectorAll('.product-card');
@@ -1247,7 +1664,6 @@
       });
     }
 
-    // PROGRESS
     let completed = 3;
     const total = 7;
 
@@ -1258,7 +1674,6 @@
       document.getElementById('progressFill').style.width = pct + '%';
     }
 
-    // CART
     function addToCart(name, price) {
       const msg = `🛒 Added: ${name} (₱${price})`;
       document.getElementById('cartMessage').textContent = msg;
@@ -1300,11 +1715,19 @@
       });
     });
 
-    // Init quiz
-    renderQuestion(0);
-    document.getElementById('completedCount').textContent = completed;
-    document.getElementById('totalCount').textContent = total;
-    document.getElementById('progressFill').style.width = Math.round((completed/total)*100) + '%';
+    // Init quiz with default (math/elementary)
+    window.onload = function() {
+      const defaultBank = quizBank.math.elementary;
+      currentQuizData = defaultBank.slice(0, 20);
+      userAnswers = new Array(currentQuizData.length).fill(null);
+      renderQuestion(0);
+      document.getElementById('completedCount').textContent = completed;
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('progressFill').style.width = Math.round((completed/total)*100) + '%';
+      // close modals if open
+      document.getElementById('mentorModal').classList.remove('active');
+      document.getElementById('quizConfigModal').classList.remove('active');
+    };
   </script>
 </body>
-  </html>
+</html>
